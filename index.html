@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mind Logic: Solar System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ═══════════════ CANVAS LAYERS ═══════════════ -->
+  <canvas id="starCanvas"></canvas>
+  <canvas id="shootingCanvas"></canvas>
+
+  <!-- ═══════════════ HEADER TITLE ═══════════════ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="header-icon">🌌</span>
+      <h1 class="site-title">Mind Logic<span class="dots">: Solar System</span></h1>
+      <span class="header-icon">✨</span>
+    </div>
+    <p class="header-sub">An Interactive Journey Through Space</p>
+  </header>
+
+  <!-- ═══════════════ CONTROLS ═══════════════ -->
+  <div class="controls">
+    <button class="ctrl-btn" onclick="zoomIn()" title="Zoom In">＋</button>
+    <button class="ctrl-btn" onclick="zoomOut()" title="Zoom Out">－</button>
+    <button class="ctrl-btn" id="muteBtn" onclick="toggleSound()" title="Toggle Sound">🔊</button>
+    <button class="ctrl-btn" id="pauseBtn" onclick="togglePause()" title="Pause / Play">⏸</button>
+    <button class="ctrl-btn" id="flyBtn" onclick="triggerFlyThrough()" title="Camera Fly-Through">🎥</button>
+  </div>
+
+  <!-- ═══════════════ INFO CARD ═══════════════ -->
+  <div id="infoCard" class="info-card">
+    <div class="info-header">
+      <span class="info-planet-icon" id="infoPlanetIcon">🌌</span>
+      <h2 id="infoTitle">Solar System</h2>
+    </div>
+    <p id="infoDesc">Click any planet to explore it.</p>
+    <div class="info-stats" id="infoStats"></div>
+  </div>
+
+  <!-- ═══════════════ SOLAR SYSTEM WRAPPER ═══════════════ -->
+  <div id="solarSystem">
+
+    <!-- SUN -->
+    <div class="sun-wrapper">
+      <div class="sun-corona"></div>
+      <div class="sun-flare f1"></div>
+      <div class="sun-flare f2"></div>
+      <div class="sun-flare f3"></div>
+      <div class="sun"
+        onclick="showInfo('Sun','☀️','The heart of our solar system — a massive ball of hot plasma generating energy through nuclear fusion.','Age: 4.6B yrs','Diameter: 1.39M km','Surface Temp: 5,500°C')">
+      </div>
+    </div>
+
+    <!-- MERCURY -->
+    <div class="orbit mercury-orbit">
+      <div class="planet mercury"
+        onclick="showInfo('Mercury','☿','The closest planet to the Sun — a rocky world with extreme temperature swings and no atmosphere.','Orbit: 88 days','Diameter: 4,879 km','Moons: 0')">
+        <div class="planet-glow mercury-glow"></div>
+      </div>
+    </div>
+
+    <!-- VENUS -->
+    <div class="orbit venus-orbit">
+      <div class="planet venus"
+        onclick="showInfo('Venus','♀','The hottest planet in the Solar System — thick toxic clouds trap heat in a runaway greenhouse effect.','Orbit: 225 days','Diameter: 12,104 km','Moons: 0')">
+        <div class="planet-glow venus-glow"></div>
+        <div class="venus-atmo"></div>
+      </div>
+    </div>
+
+    <!-- EARTH + MOON -->
+    <div class="orbit earth-orbit">
+      <div class="earth-system">
+        <div class="planet earth"
+          onclick="showInfo('Earth','🌍','Our beautiful blue home — the only known planet with liquid water on the surface and life.','Orbit: 365 days','Diameter: 12,742 km','Moons: 1')">
+          <div class="planet-glow earth-glow"></div>
+          <div class="earth-clouds"></div>
+        </div>
+        <!-- Moon orbiting Earth -->
+        <div class="moon-orbit">
+          <div class="planet moon"
+            onclick="showInfo('Moon','🌕','Earth\'s natural satellite — covered in craters and controlling our tides.','Orbit: 27 days','Diameter: 3,474 km','Moons: —')">
+            <div class="planet-glow moon-glow"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARS -->
+    <div class="orbit mars-orbit">
+      <div class="planet mars"
+        onclick="showInfo('Mars','♂','The Red Planet — home to the tallest volcano and deepest canyon in the Solar System.','Orbit: 687 days','Diameter: 6,779 km','Moons: 2')">
+        <div class="planet-glow mars-glow"></div>
+      </div>
+    </div>
+
+    <!-- ASTEROID BELT (decorative) -->
+    <div class="asteroid-belt-ring"></div>
+
+    <!-- JUPITER -->
+    <div class="orbit jupiter-orbit">
+      <div class="planet jupiter"
+        onclick="showInfo('Jupiter','♃','The largest planet — a gas giant with a Great Red Spot storm raging for centuries.','Orbit: 12 years','Diameter: 139,820 km','Moons: 95')">
+        <div class="planet-glow jupiter-glow"></div>
+        <div class="jupiter-band b1"></div>
+        <div class="jupiter-band b2"></div>
+        <div class="jupiter-spot"></div>
+      </div>
+    </div>
+
+    <!-- SATURN + RINGS -->
+    <div class="orbit saturn-orbit">
+      <div class="saturn-wrapper"
+        onclick="showInfo('Saturn','♄','Famous for its spectacular ring system — a gas giant with stunning ice and dust rings.','Orbit: 29 years','Diameter: 116,460 km','Moons: 146')">
+        <div class="saturn-ring-back"></div>
+        <div class="planet saturn">
+          <div class="planet-glow saturn-glow"></div>
+          <div class="saturn-band sb1"></div>
+          <div class="saturn-band sb2"></div>
+        </div>
+        <div class="saturn-ring-front"></div>
+      </div>
+    </div>
+
+    <!-- URANUS -->
+    <div class="orbit uranus-orbit">
+      <div class="planet uranus"
+        onclick="showInfo('Uranus','⛢','An ice giant that rotates on its side — its axis tilted 98° creates extreme seasons.','Orbit: 84 years','Diameter: 50,724 km','Moons: 27')">
+        <div class="planet-glow uranus-glow"></div>
+        <div class="uranus-ring"></div>
+      </div>
+    </div>
+
+    <!-- NEPTUNE -->
+    <div class="orbit neptune-orbit">
+      <div class="planet neptune"
+        onclick="showInfo('Neptune','♆','The windiest planet — supersonic storms reaching 2,100 km/h in its deep blue atmosphere.','Orbit: 165 years','Diameter: 49,244 km','Moons: 16')">
+        <div class="planet-glow neptune-glow"></div>
+        <div class="neptune-storm"></div>
+      </div>
+    </div>
+
+  </div><!-- end #solarSystem -->
+
+  <!-- ═══════════════ ASTEROID PARTICLES ═══════════════ -->
+  <div id="asteroidLayer"></div>
+
+  <!-- ═══════════════ AUDIO ═══════════════ -->
+  <audio id="spaceAudio" loop>
+    <source src="audio/space-ambience.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ═══════════════ FLY-THROUGH OVERLAY ═══════════════ -->
+  <div id="flyOverlay" class="fly-overlay hidden">
+    <div class="fly-msg">🎥 Entering Warp Speed…</div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
